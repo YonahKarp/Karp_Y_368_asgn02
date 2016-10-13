@@ -13,7 +13,7 @@ namespace ConsoleApplication3
         public static  Computer prototype = new Computer("proto", true, 100000.0, new int?[] { 1, 2, 3, 4, 5 }, 20000);
         public static Computer userProto;
 
-        static void Main(string[] args) {
+        static void Main() {
             Computer[] comps = new Computer[10];
             int arrayPointer = 0;
 
@@ -78,7 +78,7 @@ namespace ConsoleApplication3
 
         static Computer NewComp()
         {
-            String id;
+            string id;
             bool? hasAntenna;
             double? storageCap;
             int?[] licenses = new int?[5];
@@ -128,7 +128,7 @@ namespace ConsoleApplication3
             Console.WriteLine("What is the Ram size?");
             try
             {
-                int size = Int32.Parse(Console.ReadLine());
+                int size = int.Parse(Console.ReadLine());
                 if(size < 1000) { throw new Exception();}
                 RAM = size;
             } catch (Exception){
@@ -144,7 +144,7 @@ namespace ConsoleApplication3
             int upperBound;
             
             Console.WriteLine("Specify the lower bound you would like to use");
-            lowerBound = Int32.Parse(Console.ReadLine());
+            lowerBound = int.Parse(Console.ReadLine());
             Console.WriteLine("Specify the upper bound you would like to use");
 
             upperBound = Int32.Parse(Console.ReadLine());
@@ -193,8 +193,6 @@ namespace ConsoleApplication3
                         avgInstalls += (license.Value != 0) ? 1 : 0;
                     }
                 }
-
-               
             }
 
             avgRam /= comps.Length; //only given until pointer 
@@ -215,74 +213,5 @@ namespace ConsoleApplication3
 
         }
 
-    }
-
-    class Computer {
-        private string id {get;}
-        
-
-        public bool? hasAntenna { get; }
-
-        private double? storageCap;
-        public double? StorageCap {
-            get {
-                return storageCap;
-            }
-            set {
-                if(value < 0) {
-                    Console.WriteLine("Error, storage must be positive. Value give was: " + value);
-                }
-            }
-        }
-
-        public int?[] licenses { get; }
-
-        private int totalRam;
-        public int TotalRam {
-            get {
-                int usedRam = 0;
-                foreach(int? license in licenses){
-                    if(license.HasValue && license.Value != 0) {
-                        usedRam += 10;
-                    }
-                }
-                //current RAM
-                return totalRam - usedRam - (hasAntenna.HasValue && hasAntenna.Value ? 100 : 50);
-            }
-
-            set {
-                if (value < 1000)
-                {
-                    Console.WriteLine(
-                        "Computer can't have less than 1000 units of RAM. RAM not set and is instead still: " + totalRam);
-                }
-                totalRam = value;
-
-            }
-        }
-            
-
-        public Computer(String id, bool? hasAntenna, double? storageCap, int?[] licenses, int totalRam)
-        {
-            this.id = id;
-            this.hasAntenna = hasAntenna;
-            this.storageCap = storageCap;
-            this.licenses = licenses;
-            this.totalRam = totalRam;
-        }
-
-        public Computer()
-        {
-            
-        }
-
-        public override string ToString()
-        {
-            return "Computer Id: " + id +
-                   "\n Storage capacity: " + storageCap +
-                   "\n RAM: " + totalRam +
-                   "\n This device has " + (hasAntenna.HasValue && hasAntenna.Value ? "an" : "NO") + " antenna" +
-                   "\n licenses: " + String.Join(",", licenses.Select(s => s.ToString()).ToArray());
-        }
     }
 }
